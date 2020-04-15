@@ -12,8 +12,8 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User login(String phone, String password) throws AuthenticationFailedException {
-        User user = userRepository.findByPhone(phone);
+    public User login(String userName, String password) throws AuthenticationFailedException {
+        User user = userRepository.findByUsername(userName);
         if(user==null || !user.getPassword().equals(password)){
             throw new AuthenticationFailedException();
         }

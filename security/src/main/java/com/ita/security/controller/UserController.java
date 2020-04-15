@@ -20,9 +20,8 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestParam("phone") String phone, @RequestParam("password") String password) throws AuthenticationFailedException {
-        System.out.println("helloworld");
-        User user = userService.login(phone, password);
+    public ResponseEntity login(@RequestParam("userName") String userName, @RequestParam("password") String password) throws AuthenticationFailedException {
+        User user = userService.login(userName, password);
         return ResponseEntity.ok().body(user);
     }
 
