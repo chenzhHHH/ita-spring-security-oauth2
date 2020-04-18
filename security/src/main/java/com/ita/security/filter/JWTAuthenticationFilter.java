@@ -4,6 +4,7 @@ package com.ita.security.filter;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
@@ -41,17 +43,18 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_AUTHORIZATION);
         String user = Jwts.parser()
-                .setSigningKey("ita")
+                .setSigningKey(TOKEN_SIGNING_KEY)
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                 .getBody()
                 .getSubject();
         if (user != null) {
-            List roles = Jwts.parser()
+            List<String> roles = Jwts.parser()
                     .setSigningKey(TOKEN_SIGNING_KEY)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody()
                     .get(TOKEN_ROLE, List.class);
-            return new UsernamePasswordAuthenticationToken(user, null, roles);
+            return new UsernamePasswordAuthenticationToken(user, null,
+                    roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
         }
         return null;
     }

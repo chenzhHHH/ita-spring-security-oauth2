@@ -42,15 +42,15 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 //        try {
 //            UserVo loginUser = new ObjectMapper().readValue(request.getInputStream(), UserVo.class);
-            UserVo loginUser=new UserVo();
-            loginUser.setUsername(request.getParameter("username"));
-            loginUser.setPassword(request.getParameter("password"));
-            UserDetails currentUserDetails = userDetailsService.loadUserByUsername(loginUser.getUsername());
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginUser.getUsername(),
-                            loginUser.getPassword(),
-                            currentUserDetails.getAuthorities()));
+        UserVo loginUser = new UserVo();
+        loginUser.setUsername(request.getParameter("username"));
+        loginUser.setPassword(request.getParameter("password"));
+        UserDetails currentUserDetails = userDetailsService.loadUserByUsername(loginUser.getUsername());
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginUser.getUsername(),
+                        loginUser.getPassword(),
+                        currentUserDetails.getAuthorities()));
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
@@ -61,6 +61,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         User loginUser = (User) authResult.getPrincipal();
         System.out.println(authResult.getAuthorities().stream());
         String token = Jwts.builder()
+                .setSubject(loginUser.getUsername())
                 .claim(TOKEN_ROLE, authResult.getAuthorities().stream().map(Object::toString).collect(Collectors.toList()))
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 30 * 1000))
                 .signWith(SignatureAlgorithm.HS512, TOKEN_SIGNING_KEY)

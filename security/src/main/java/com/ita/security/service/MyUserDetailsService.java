@@ -23,9 +23,11 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("username: " + username);
         String password=new BCryptPasswordEncoder().encode("123");
-        return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        if(username.equals("admin")){
+            return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
+        }
+        return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
     }
 }
 
