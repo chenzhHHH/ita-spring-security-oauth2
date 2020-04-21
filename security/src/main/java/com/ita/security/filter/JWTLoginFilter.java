@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
-    private static String TOKEN_ROLE = "Roles";
-    private static String TOKEN_PREFIX = "Bearer ";
-    private static String HEADER_AUTHORIZATION = "Authorization";
-    private static String TOKEN_SIGNING_KEY = "ita_security_demo";
+    private static final String TOKEN_ROLE = "Roles";
+    private static final String TOKEN_PREFIX = "Bearer ";
+    private static final String HEADER_AUTHORIZATION = "Authorization";
+    private static final String TOKEN_SIGNING_KEY = "ita_security_demo";
 
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;

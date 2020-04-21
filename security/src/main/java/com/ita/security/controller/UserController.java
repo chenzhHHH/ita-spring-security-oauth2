@@ -44,4 +44,10 @@ public class UserController {
         return ResponseEntity.ok().body(userInfo);
     }
 
+    @GetMapping("/resource")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity resource(){
+        return ResponseEntity.ok().body("success");
+    }
+
 }
