@@ -6,6 +6,7 @@
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.context.annotation.Primary;
+//import org.springframework.security.authentication.AuthenticationProvider;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.http.SessionCreationPolicy;
 //import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -24,6 +25,8 @@
 //    private TokenStore tokenStore;
 //    @Autowired
 //    private MyUserDetailsService myUserDetailsService;
+//    @Autowired
+//    private AuthenticationProvider authenticationProvider;
 //
 //    @Bean
 //    @Primary
@@ -31,7 +34,6 @@
 //        DefaultTokenServices service=new DefaultTokenServices();
 //        service.setTokenStore(tokenStore);
 //        service.setSupportRefreshToken(true);
-//
 //        return service;
 //    }
 //
@@ -45,17 +47,17 @@
 //    @Override
 //    public void configure(HttpSecurity http) throws Exception {
 //        http
-//                .formLogin()
-//                .and()
-//                .authorizeRequests()
-//                    .antMatchers("/user/resource").access("#oauth2.hasScope('all')")
-//                .anyRequest()
-//                    .permitAll()
-//                .and()
 //                .cors()
 //                .and()
 //                .csrf()
 //                    .disable()
+//                .formLogin()
+//                .and()
+//                .authorizeRequests()
+//                    .antMatchers("/user/resource").access("#oauth2.hasScope('all')")
+//                    .anyRequest().permitAll()
+//                .and()
+//                .authenticationProvider(authenticationProvider)
 //                .sessionManagement()
 //                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //    }
