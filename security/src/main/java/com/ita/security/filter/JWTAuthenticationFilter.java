@@ -1,6 +1,5 @@
 package com.ita.security.filter;
 
-
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,4 +57,5 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         }
         return null;
     }
+
 }

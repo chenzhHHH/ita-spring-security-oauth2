@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -36,6 +35,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     private static final String SECRET = "secret";
     private static final String RESOURCE_ID = "res1";
+    private static final String CLIENT_ID = "client1";
 
     @Bean
     public AuthorizationServerTokenServices tokenServices() {
@@ -64,7 +64,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("client1")
+                .withClient(CLIENT_ID)
                 .secret(passwordEncoder.encode(SECRET))
                 .resourceIds(RESOURCE_ID)
                 .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")
@@ -80,9 +80,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .authorizationCodeServices(authorizationCodeServices)
                 .tokenServices(tokenServices())
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST);
-
     }
-
-
 
 }

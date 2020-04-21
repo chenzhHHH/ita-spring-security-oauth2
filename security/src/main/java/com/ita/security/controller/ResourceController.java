@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/resource")
+public class ResourceController {
 
     @GetMapping("/info")
     public ResponseEntity info(){
-        return ResponseEntity.ok().body("user get info success");
+        return ResponseEntity.ok().body("success visit resource");
     }
 
 }

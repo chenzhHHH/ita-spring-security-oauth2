@@ -1,6 +1,5 @@
 package com.ita.security.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ita.security.vo.UserVo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -40,8 +37,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-//        try {
-//            UserVo loginUser = new ObjectMapper().readValue(request.getInputStream(), UserVo.class);
         UserVo loginUser = new UserVo();
         loginUser.setUsername(request.getParameter("username"));
         loginUser.setPassword(request.getParameter("password"));
@@ -51,9 +46,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                         loginUser.getUsername(),
                         loginUser.getPassword(),
                         currentUserDetails.getAuthorities()));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     @Override
@@ -68,4 +60,5 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                 .compact();
         response.addHeader(HEADER_AUTHORIZATION, TOKEN_PREFIX + token);
     }
+
 }
